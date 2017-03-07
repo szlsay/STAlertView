@@ -5,8 +5,11 @@
 
 简易UIAlertView，添加动画，虚化效果
 
-
 ## 显示效果
+### 从上开始显示的效果和多个按钮
+![image](https://github.com/STShenZhaoliang/STImage/blob/master/STAlertView/animation1.gif)
+### 在中间晃动和两个按钮
+![image](https://github.com/STShenZhaoliang/STImage/blob/master/STAlertView/animation2.gif)
 
 ## 使用方式
 与系统UIAlertView的初始化、显示、委托方法相同，多添加动画接口animationOption
