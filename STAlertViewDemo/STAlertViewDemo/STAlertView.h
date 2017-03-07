@@ -1,17 +1,14 @@
-# STAlertView
+//
+//  STAlertView.h
+//  UIVisualEffectDemo
+//
+//  Created by ST on 17/3/3.
+//  Copyright © 2017年 ST. All rights reserved.
+//
 
-![License MIT](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-
-简易UIAlertView，添加动画，虚化效果
+#import <UIKit/UIKit.h>
 
 
-## 显示效果
-
-## 使用方式
-与系统UIAlertView的初始化、显示、委托方法相同，多添加动画接口animationOption
-
-```
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
@@ -41,13 +38,3 @@ typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
 @end
 
 NS_ASSUME_NONNULL_END
-
-```
-
-## 版本控制
-### 1.0
-1. 支持iOS8以上
-2. 添加动画，Zoom和TopToCenter动画
-3. 支持虚化背景
-
-

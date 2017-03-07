@@ -7,68 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		705B4E1B1E6E45AE00915B05 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 705B4E181E6E45AE00915B05 /* ViewController.m */; };
+		705B4E1C1E6E45AE00915B05 /* STAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 705B4E1A1E6E45AE00915B05 /* STAlertView.m */; };
 		774F95FA1C35069700176598 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F95F91C35069700176598 /* main.m */; };
 		774F95FD1C35069700176598 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F95FC1C35069700176598 /* AppDelegate.m */; };
-		774F96001C35069700176598 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F95FF1C35069700176598 /* ViewController.m */; };
 		774F96031C35069700176598 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774F96011C35069700176598 /* Main.storyboard */; };
 		774F96051C35069700176598 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 774F96041C35069700176598 /* Assets.xcassets */; };
 		774F96081C35069700176598 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774F96061C35069700176598 /* LaunchScreen.storyboard */; };
-		774F96131C35069700176598 /* STAlertViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F96121C35069700176598 /* STAlertViewDemoTests.m */; };
-		774F961E1C35069700176598 /* STAlertViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F961D1C35069700176598 /* STAlertViewDemoUITests.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		774F960F1C35069700176598 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 774F95ED1C35069700176598 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 774F95F41C35069700176598;
-			remoteInfo = STAlertViewDemo;
-		};
-		774F961A1C35069700176598 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 774F95ED1C35069700176598 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 774F95F41C35069700176598;
-			remoteInfo = STAlertViewDemo;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		705B4E171E6E45AE00915B05 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		705B4E181E6E45AE00915B05 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		705B4E191E6E45AE00915B05 /* STAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAlertView.h; sourceTree = "<group>"; };
+		705B4E1A1E6E45AE00915B05 /* STAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAlertView.m; sourceTree = "<group>"; };
 		774F95F51C35069700176598 /* STAlertViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STAlertViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		774F95F91C35069700176598 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		774F95FB1C35069700176598 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		774F95FC1C35069700176598 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		774F95FE1C35069700176598 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		774F95FF1C35069700176598 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		774F96021C35069700176598 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		774F96041C35069700176598 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		774F96071C35069700176598 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		774F96091C35069700176598 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		774F960E1C35069700176598 /* STAlertViewDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STAlertViewDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		774F96121C35069700176598 /* STAlertViewDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STAlertViewDemoTests.m; sourceTree = "<group>"; };
-		774F96141C35069700176598 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		774F96191C35069700176598 /* STAlertViewDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STAlertViewDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		774F961D1C35069700176598 /* STAlertViewDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STAlertViewDemoUITests.m; sourceTree = "<group>"; };
-		774F961F1C35069700176598 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		774F95F21C35069700176598 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		774F960B1C35069700176598 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		774F96161C35069700176598 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -82,8 +46,6 @@
 			isa = PBXGroup;
 			children = (
 				774F95F71C35069700176598 /* STAlertViewDemo */,
-				774F96111C35069700176598 /* STAlertViewDemoTests */,
-				774F961C1C35069700176598 /* STAlertViewDemoUITests */,
 				774F95F61C35069700176598 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,8 +54,6 @@
 			isa = PBXGroup;
 			children = (
 				774F95F51C35069700176598 /* STAlertViewDemo.app */,
-				774F960E1C35069700176598 /* STAlertViewDemoTests.xctest */,
-				774F96191C35069700176598 /* STAlertViewDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,8 +63,10 @@
 			children = (
 				774F95FB1C35069700176598 /* AppDelegate.h */,
 				774F95FC1C35069700176598 /* AppDelegate.m */,
-				774F95FE1C35069700176598 /* ViewController.h */,
-				774F95FF1C35069700176598 /* ViewController.m */,
+				705B4E171E6E45AE00915B05 /* ViewController.h */,
+				705B4E181E6E45AE00915B05 /* ViewController.m */,
+				705B4E191E6E45AE00915B05 /* STAlertView.h */,
+				705B4E1A1E6E45AE00915B05 /* STAlertView.m */,
 				774F96011C35069700176598 /* Main.storyboard */,
 				774F96041C35069700176598 /* Assets.xcassets */,
 				774F96061C35069700176598 /* LaunchScreen.storyboard */,
@@ -120,24 +82,6 @@
 				774F95F91C35069700176598 /* main.m */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		774F96111C35069700176598 /* STAlertViewDemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				774F96121C35069700176598 /* STAlertViewDemoTests.m */,
-				774F96141C35069700176598 /* Info.plist */,
-			);
-			path = STAlertViewDemoTests;
-			sourceTree = "<group>";
-		};
-		774F961C1C35069700176598 /* STAlertViewDemoUITests */ = {
-			isa = PBXGroup;
-			children = (
-				774F961D1C35069700176598 /* STAlertViewDemoUITests.m */,
-				774F961F1C35069700176598 /* Info.plist */,
-			);
-			path = STAlertViewDemoUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,42 +104,6 @@
 			productReference = 774F95F51C35069700176598 /* STAlertViewDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		774F960D1C35069700176598 /* STAlertViewDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 774F96251C35069700176598 /* Build configuration list for PBXNativeTarget "STAlertViewDemoTests" */;
-			buildPhases = (
-				774F960A1C35069700176598 /* Sources */,
-				774F960B1C35069700176598 /* Frameworks */,
-				774F960C1C35069700176598 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				774F96101C35069700176598 /* PBXTargetDependency */,
-			);
-			name = STAlertViewDemoTests;
-			productName = STAlertViewDemoTests;
-			productReference = 774F960E1C35069700176598 /* STAlertViewDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		774F96181C35069700176598 /* STAlertViewDemoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 774F96281C35069700176598 /* Build configuration list for PBXNativeTarget "STAlertViewDemoUITests" */;
-			buildPhases = (
-				774F96151C35069700176598 /* Sources */,
-				774F96161C35069700176598 /* Frameworks */,
-				774F96171C35069700176598 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				774F961B1C35069700176598 /* PBXTargetDependency */,
-			);
-			name = STAlertViewDemoUITests;
-			productName = STAlertViewDemoUITests;
-			productReference = 774F96191C35069700176598 /* STAlertViewDemoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -208,16 +116,6 @@
 					774F95F41C35069700176598 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = Z25J3BA353;
-					};
-					774F960D1C35069700176598 = {
-						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = Z25J3BA353;
-						TestTargetID = 774F95F41C35069700176598;
-					};
-					774F96181C35069700176598 = {
-						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = Z25J3BA353;
-						TestTargetID = 774F95F41C35069700176598;
 					};
 				};
 			};
@@ -235,8 +133,6 @@
 			projectRoot = "";
 			targets = (
 				774F95F41C35069700176598 /* STAlertViewDemo */,
-				774F960D1C35069700176598 /* STAlertViewDemoTests */,
-				774F96181C35069700176598 /* STAlertViewDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -252,20 +148,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		774F960C1C35069700176598 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		774F96171C35069700176598 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -273,42 +155,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				774F96001C35069700176598 /* ViewController.m in Sources */,
+				705B4E1B1E6E45AE00915B05 /* ViewController.m in Sources */,
 				774F95FD1C35069700176598 /* AppDelegate.m in Sources */,
+				705B4E1C1E6E45AE00915B05 /* STAlertView.m in Sources */,
 				774F95FA1C35069700176598 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		774F960A1C35069700176598 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				774F96131C35069700176598 /* STAlertViewDemoTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		774F96151C35069700176598 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				774F961E1C35069700176598 /* STAlertViewDemoUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		774F96101C35069700176598 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 774F95F41C35069700176598 /* STAlertViewDemo */;
-			targetProxy = 774F960F1C35069700176598 /* PBXContainerItemProxy */;
-		};
-		774F961B1C35069700176598 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 774F95F41C35069700176598 /* STAlertViewDemo */;
-			targetProxy = 774F961A1C35069700176598 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		774F96011C35069700176598 /* Main.storyboard */ = {
@@ -366,7 +220,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -403,7 +257,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -434,54 +288,6 @@
 			};
 			name = Release;
 		};
-		774F96261C35069700176598 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = STAlertViewDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shentian.STAlertViewDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/STAlertViewDemo.app/STAlertViewDemo";
-			};
-			name = Debug;
-		};
-		774F96271C35069700176598 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = STAlertViewDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shentian.STAlertViewDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/STAlertViewDemo.app/STAlertViewDemo";
-			};
-			name = Release;
-		};
-		774F96291C35069700176598 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = STAlertViewDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shentian.STAlertViewDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = STAlertViewDemo;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		774F962A1C35069700176598 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = STAlertViewDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shentian.STAlertViewDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = STAlertViewDemo;
-				USES_XCTRUNNER = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -501,22 +307,7 @@
 				774F96241C35069700176598 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-		};
-		774F96251C35069700176598 /* Build configuration list for PBXNativeTarget "STAlertViewDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				774F96261C35069700176598 /* Debug */,
-				774F96271C35069700176598 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		774F96281C35069700176598 /* Build configuration list for PBXNativeTarget "STAlertViewDemoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				774F96291C35069700176598 /* Debug */,
-				774F962A1C35069700176598 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

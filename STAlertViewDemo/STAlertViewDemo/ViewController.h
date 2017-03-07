@@ -1,9 +1,9 @@
 //
 //  ViewController.h
-//  STAlertViewDemo
+//  UIVisualEffectDemo
 //
-//  Created by https://github.com/STShenZhaoliang/STAlertView on 15/12/31.
-//  Copyright © 2015年 ST. All rights reserved.
+//  Created by ST on 17/3/2.
+//  Copyright © 2017年 ST. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
