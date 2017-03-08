@@ -48,6 +48,19 @@ NS_ASSUME_NONNULL_END
 ```
 
 ## 版本控制
+### 1.1
+1. 添加visual接口，不想使用虚化可以设置为NO
+2. 添加一行代码处理
+
+```
+ + (void)showWithTitle:(nullable NSString *)title 
+               message:(nullable NSString *)message 
+     cancelButtonTitle:(nullable NSString *)cancelButtonTitle   
+      otherButtonTitle:(nullable NSString *)otherButtonTitle 
+      clickButtonBlock:(void (^)(STAlertView *alertView, NSUInteger buttonIndex))block;
+
+```
+
 ### 1.0
 1. 支持iOS8以上
 2. 添加动画，Zoom和TopToCenter动画

@@ -23,10 +23,15 @@ typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
 @interface STAlertView : UIView
 - (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message delegate:(nullable id <STAlertViewDelegate>)delegate cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitles:(nullable NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
++ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(void (^)(STAlertView *alertView, NSUInteger buttonIndex))block;
+
 // shows popup alert animated.
 - (void)show;
 @property(nullable,nonatomic,weak)id <STAlertViewDelegate> delegate;
 @property(nonatomic)STAlertAnimationOptions animationOption;
+// background visual
+@property(nonatomic, assign)BOOL visual;
+
 @end
 
 @protocol STAlertViewDelegate <NSObject>

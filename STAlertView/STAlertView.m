@@ -9,6 +9,8 @@
 
 #import "STAlertView.h"
 
+typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger buttonIndex);
+
 @interface STAlertView()
 
 /** 1.视图的宽高 */
@@ -33,6 +35,9 @@
 @property(nonatomic, strong, nullable)NSString *message;
 @property(nonatomic, strong, nullable)NSString *cancelButtonTitle;
 @property(nonatomic, strong, nullable)NSMutableArray<NSString *> *otherButtonTitles;
+
+@property(nonatomic, copy)STAlertViewClickButtonBlock clickButtonBlock;
+
 @end
 
 @implementation STAlertView
@@ -65,12 +70,20 @@
     return self;
 }
 
++ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nonnull void (^)(STAlertView * _Nonnull, NSUInteger))block{
+    STAlertView *alertView = [[STAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitle, nil];
+    alertView.clickButtonBlock = block;
+    [alertView show];
+}
+
+
 - (void)setupDefault
 {
     self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.backgroundColor = [UIColor clearColor];
-    self.animationOption = STAlertAnimationOptionNone;
+    self.visual = YES;
+    self.animationOption = STAlertAnimationOptionZoom;
     [self addSubview:self.effectView];
     [self addSubview:self.contentView];
     self.contentView.backgroundColor = [UIColor whiteColor];
@@ -156,6 +169,10 @@
         [self.delegate alertView:self clickedButtonAtIndex:0];
     }
     
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(self, 0);
+    }
+    
     [self remove];
 }
 
@@ -171,6 +188,10 @@
         [self.delegate alertView:self clickedButtonAtIndex:buttonIndex];
     }
     
+    if (self.clickButtonBlock) {
+        self.clickButtonBlock(self, buttonIndex);
+    }
+    
     [self remove];
 }
 
@@ -181,7 +202,9 @@
         case STAlertAnimationOptionNone:{
             self.contentView.alpha = 0.0;
             [UIView animateWithDuration:0.34 animations:^{
-                self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                if (self.visual) {
+                    self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                }
                 self.contentView.alpha = 1.0;
             }];
         }
@@ -191,7 +214,9 @@
             [UIView animateWithDuration:0.75 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:1.0
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^{
-                                 self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                                 if (self.visual) {
+                                     self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                                 }
                                  [self.contentView.layer setValue:@(1.0) forKeyPath:@"transform.scale"];
                              } completion:nil];
         }
@@ -202,7 +227,9 @@
             [UIView animateWithDuration:0.75 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:1.0
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^{
-                                 self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                                 if (self.visual) {
+                                     self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                                 }
                                  self.contentView.layer.position = self.center;
                              } completion:nil];
         }
@@ -217,8 +244,10 @@
     
     switch (self.animationOption) {
         case STAlertAnimationOptionNone:{
-            [UIView animateWithDuration:0.34 animations:^{
-                self.effectView.effect = nil;
+            [UIView animateWithDuration:0.3 animations:^{
+                if (self.visual) {
+                    self.effectView.effect = nil;
+                }
                 self.contentView.alpha = 0.0;
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
@@ -226,9 +255,11 @@
         }
             break;
         case STAlertAnimationOptionZoom:{
-            [UIView animateWithDuration:0.34 animations:^{
+            [UIView animateWithDuration:0.3 animations:^{
                 self.contentView.alpha = 0.0;
-                self.effectView.effect = nil;
+                if (self.visual) {
+                    self.effectView.effect = nil;
+                }
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
             }];
@@ -236,8 +267,10 @@
             break;
         case STAlertAnimationOptionTopToCenter:{
             CGPoint endPoint = CGPointMake(self.center.x, CGRectGetHeight(self.frame) + CGRectGetHeight(self.contentView.frame));
-            [UIView animateWithDuration:0.34 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                self.effectView.effect = nil;
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                if (self.visual) {
+                    self.effectView.effect = nil;
+                }
                 self.contentView.layer.position = endPoint;
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
@@ -266,7 +299,7 @@
     button.frame = frame;
     [button setTitleColor:[UIColor colorWithRed:(70.0/255) green:(130.0/255) blue:(233.0/255) alpha:1.0] forState:UIControlStateNormal];
     [button setTitle:title forState:UIControlStateNormal];
-    [button setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:(235.0/255) green:(228.0/255) blue:(240.0/255) alpha:1.0]] forState:UIControlStateHighlighted];
+    [button setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:(235.0/255) green:(235.0/255) blue:(235.0/255) alpha:1.0]] forState:UIControlStateHighlighted];
     button.titleLabel.adjustsFontSizeToFitWidth = YES;
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     UIView *lineUp = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, 0.5)];
@@ -307,6 +340,16 @@
     [self.labelMessage sizeToFit];
     CGSize sizeMessage = self.labelMessage.frame.size;
     self.labelMessage.frame = CGRectMake(labelX, CGRectGetMaxY(self.labelTitle.frame) + 5, labelW, sizeMessage.height);
+}
+
+- (void)setVisual:(BOOL)visual
+{
+    _visual = visual;
+    if (visual) {
+        self.effectView.backgroundColor = [UIColor clearColor];
+    }else {
+        self.effectView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:102.0/255];
+    }
 }
 #pragma mark - --- 6.getters 属性 —--
 - (CGFloat)screenWidth{
