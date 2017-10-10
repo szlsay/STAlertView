@@ -59,8 +59,8 @@
 //         NSLog(@"%s %@ %zd", __FUNCTION__, alertView, buttonIndex);
 //    }];
     
-    STAlertView *alertViewST = [[STAlertView alloc]initWithTitle:title placeholder:placeholder cancelButtonTitle:@"取消" otherButtonTitle:@"确定" clickButtonBlock:^(STAlertView * _Nonnull alertView, NSUInteger buttonIndex, UITextField * _Nonnull textField) {
-        NSLog(@"%s %zd %@", __FUNCTION__, buttonIndex, textField);
+    STAlertView *alertViewST = [[STAlertView alloc]initWithTitle:title placeholder:placeholder cancelButtonTitle:@"取消" otherButtonTitle:@"确定" clickButtonBlock:^(STAlertView * _Nonnull alertView, NSUInteger buttonIndex, NSString *text) {
+        NSLog(@"%s %zd %@", __FUNCTION__, buttonIndex, text);
     }];
     alertViewST.animationOption = STAlertAnimationOptionZoom;
     alertViewST.visual = NO;

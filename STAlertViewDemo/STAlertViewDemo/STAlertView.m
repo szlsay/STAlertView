@@ -10,7 +10,7 @@
 #import "STAlertView.h"
 
 typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView, NSUInteger buttonIndex);
-typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteger buttonIndex, UITextField *textField);
+typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteger buttonIndex, NSString *text);
 @interface STAlertView()
 
 /** 1.视图的宽高 */
@@ -77,7 +77,7 @@ typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteg
     [alertView show];
 }
 
-- (instancetype)initWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex, UITextField *textField))block{
+- (instancetype)initWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex, NSString *text))block{
     if (self = [super init]) {
         self.title = title;
         self.placeholder = placeholder;
@@ -102,10 +102,29 @@ typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteg
         self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
         self.contentView.center = self.center;
         self.clickTextFieldBlock = block;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     return self;
 }
 
++ (void)showWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex, NSString *text))block{
+    STAlertView *alertView = [[STAlertView alloc]initWithTitle:title placeholder:placeholder  cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle clickButtonBlock:block];
+    [alertView show];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
 
 - (void)setupDefault
 {
@@ -204,7 +223,7 @@ typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteg
     }
     
     if (self.clickTextFieldBlock) {
-        self.clickTextFieldBlock(self, 0, self.textField);
+        self.clickTextFieldBlock(self, 0, self.textField.text);
     }
     
     [self remove];
@@ -227,7 +246,7 @@ typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteg
     }
     
     if (self.clickTextFieldBlock) {
-        self.clickTextFieldBlock(self, buttonIndex, self.textField);
+        self.clickTextFieldBlock(self, 1, self.textField.text);
     }
     
     [self remove];
@@ -235,7 +254,7 @@ typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteg
 
 - (void)clickTextChanged:(UITextField *)textField{
     if (self.clickTextFieldBlock) {
-        self.clickTextFieldBlock(self, -1, textField);
+        self.clickTextFieldBlock(self, -1, textField.text);
     }
 }
 - (void)show {
@@ -323,6 +342,23 @@ typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteg
         default:
             break;
     }
+}
+
+- (void)keyboardWillShow:(NSNotification *)noti{
+    CGRect rect = [noti.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat height = rect.size.height;
+    CGPoint center = self.center;
+    center.y -= height/2;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.contentView.center = center;
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)noti{
+    CGPoint center = self.center;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.contentView.center = center;
+    }];
 }
 #pragma mark - --- 4.private methods 私有方法 ---
 
