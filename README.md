@@ -1,7 +1,9 @@
 # SXAlertView
 
 ![License MIT](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)
+![Pod version](https://img.shields.io/cocoapods/v/SXAlertView.svg?style=flat)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Platform info](https://img.shields.io/cocoapods/p/SXAlertView.svg?style=flat)](http://cocoadocs.org/docsets/SXAlertView)
 
 600行代码实现的简易UIAlertView，添加动画，虚化效果。接口文件中没有对视图的更多的视图属性开放接口，使用过程中可以根据自己的需求进行自定义接口。由于Pod中STAlertView已有，所以使用SXAlertView命名代码。
 
@@ -20,6 +22,8 @@
 ### 2.4 虚化效果
 ![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif4.gif)
 
+## 三、TODO
+3.1 需要完成多个按钮或多文本效果下的自动布局
 
 
 
