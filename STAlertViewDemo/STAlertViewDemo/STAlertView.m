@@ -9,8 +9,8 @@
 
 #import "STAlertView.h"
 
-typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger buttonIndex);
-
+typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView, NSUInteger buttonIndex);
+typedef void (^STAlertViewClickTextFieldBlock) (STAlertView *alertView, NSUInteger buttonIndex, UITextField *textField);
 @interface STAlertView()
 
 /** 1.视图的宽高 */
@@ -33,11 +33,12 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
 /** 7.显示的数据 */
 @property(nonatomic, strong, nullable)NSString *title;
 @property(nonatomic, strong, nullable)NSString *message;
+@property(nonatomic, strong, nullable)NSString *placeholder;
 @property(nonatomic, strong, nullable)NSString *cancelButtonTitle;
 @property(nonatomic, strong, nullable)NSMutableArray<NSString *> *otherButtonTitles;
 
 @property(nonatomic, copy)STAlertViewClickButtonBlock clickButtonBlock;
-
+@property(nonatomic, copy)STAlertViewClickTextFieldBlock clickTextFieldBlock;
 @end
 
 @implementation STAlertView
@@ -74,6 +75,35 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
     STAlertView *alertView = [[STAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitle, nil];
     alertView.clickButtonBlock = block;
     [alertView show];
+}
+
+- (instancetype)initWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex, UITextField *textField))block{
+    if (self = [super init]) {
+        self.title = title;
+        self.placeholder = placeholder;
+        self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.backgroundColor = [UIColor clearColor];
+        self.visual = NO;
+        self.animationOption = STAlertAnimationOptionZoom;
+        [self addSubview:self.effectView];
+        [self addSubview:self.contentView];
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        [self.contentView addSubview:self.labelTitle];
+        [self.contentView addSubview:self.textField];
+        
+        CGFloat buttonY = CGRectGetMaxY(self.textField.frame) + 20;
+        UIButton *buttonCancel = [self buttonWithFrame:CGRectMake(0,buttonY, self.contentWidth/2, self.contentHeight/2) title:cancelButtonTitle target:self action:@selector(clickCancel:)];
+        UIButton *buttonOther = [self buttonWithFrame:CGRectMake(self.contentWidth/2, buttonY, self.contentWidth/2, self.contentHeight/2) title:otherButtonTitle target:self action:@selector(clickOther:)];
+        [self.contentView addSubview:buttonOther];
+        [self.contentView addSubview:buttonCancel];
+        
+        CGFloat height = self.contentHeight/2 + buttonY;
+        self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
+        self.contentView.center = self.center;
+        self.clickTextFieldBlock = block;
+    }
+    return self;
 }
 
 
@@ -173,6 +203,10 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
         self.clickButtonBlock(self, 0);
     }
     
+    if (self.clickTextFieldBlock) {
+        self.clickTextFieldBlock(self, 0, self.textField);
+    }
+    
     [self remove];
 }
 
@@ -192,9 +226,18 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
         self.clickButtonBlock(self, buttonIndex);
     }
     
+    if (self.clickTextFieldBlock) {
+        self.clickTextFieldBlock(self, buttonIndex, self.textField);
+    }
+    
     [self remove];
 }
 
+- (void)clickTextChanged:(UITextField *)textField{
+    if (self.clickTextFieldBlock) {
+        self.clickTextFieldBlock(self, -1, textField);
+    }
+}
 - (void)show {
     [[UIApplication sharedApplication].keyWindow addSubview:self];
     
@@ -357,6 +400,22 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
     self.labelMessage.frame = CGRectMake(labelX, labelY, labelW, labelH);
 }
 
+- (void)setPlaceholder:(NSString *)placeholder{
+    _placeholder = placeholder;
+    
+    CGFloat labelX = 16;
+    CGFloat labelY = CGRectGetMaxY(self.labelTitle.frame) + 5;
+    CGFloat labelW = self.contentWidth - 2*labelX;
+    
+    self.textField.placeholder = placeholder;
+    [self.textField sizeToFit];
+    CGSize sizeMessage = self.textField.frame.size;
+    if (sizeMessage.height > self.screenHeight/2) {
+        sizeMessage.height = self.screenHeight/2;
+    }
+    CGFloat labelH = sizeMessage.height;
+    self.textField.frame = CGRectMake(labelX, labelY, labelW, labelH);
+}
 - (void)setTextAlignment:(NSTextAlignment)textAlignment{
     _textAlignment = textAlignment;
     self.labelMessage.textAlignment = textAlignment;
@@ -435,6 +494,19 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
         [_labelMessage setSelectable:NO];
     }
     return _labelMessage;
+}
+
+- (UITextField *)textField
+{
+    if (!_textField) {
+        _textField = [[UITextField alloc]init];
+        _textField.frame = CGRectMake(16, 22, self.contentWidth-32, 0);
+        _textField.textColor = [UIColor blackColor];
+        _textField.font = [UIFont systemFontOfSize:15];
+        _textField.borderStyle = UITextBorderStyleRoundedRect;
+        [_textField addTarget:self action:@selector(clickTextChanged:) forControlEvents:UIControlEventEditingChanged];
+    }
+    return _textField;
 }
 
 - (UIVisualEffectView *)effectView

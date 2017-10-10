@@ -45,6 +45,7 @@
     
     NSString *cancelButtonTitle = @"取消";
     
+    NSString *placeholder = @"请输入密码";
 //    STAlertView *alertViewST = [[STAlertView alloc]initWithTitle:title
 //                                                          message:message
 //                                                         delegate:self
@@ -54,9 +55,17 @@
 //    alertViewST.visual = NO;
 //    [alertViewST show];
     
-    [STAlertView showWithTitle:title message:message cancelButtonTitle:cancelButtonTitle otherButtonTitle:@"确定" clickButtonBlock:^(STAlertView * _Nonnull alertView, NSUInteger buttonIndex) {
-         NSLog(@"%s %@ %zd", __FUNCTION__, alertView, buttonIndex);
+//    [STAlertView showWithTitle:title message:message cancelButtonTitle:cancelButtonTitle otherButtonTitle:@"确定" clickButtonBlock:^(STAlertView * _Nonnull alertView, NSUInteger buttonIndex) {
+//         NSLog(@"%s %@ %zd", __FUNCTION__, alertView, buttonIndex);
+//    }];
+    
+    STAlertView *alertViewST = [[STAlertView alloc]initWithTitle:title placeholder:placeholder cancelButtonTitle:@"取消" otherButtonTitle:@"确定" clickButtonBlock:^(STAlertView * _Nonnull alertView, NSUInteger buttonIndex, UITextField * _Nonnull textField) {
+        NSLog(@"%s %zd %@", __FUNCTION__, buttonIndex, textField);
     }];
+    alertViewST.animationOption = STAlertAnimationOptionZoom;
+    alertViewST.visual = NO;
+    [alertViewST show];
+    
 }
 
 

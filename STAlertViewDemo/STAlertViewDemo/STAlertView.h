@@ -25,6 +25,7 @@ typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
 
 + (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex))block;
 
+- (instancetype)initWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex, UITextField *textField))block;
 // shows popup alert animated.
 - (void)show;
 @property(nullable,nonatomic,weak)id <STAlertViewDelegate> delegate;
@@ -33,7 +34,8 @@ typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
 @property(nonatomic)NSTextAlignment textAlignment;
 // background visual
 @property(nonatomic, assign)BOOL visual;
-
+/** <##> */
+@property(nonatomic, strong)UITextField *textField;
 @end
 
 @protocol STAlertViewDelegate <NSObject>
