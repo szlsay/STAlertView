@@ -28,7 +28,21 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     NSString *title = @"你真的会使用模糊效果吗？";
+    
+
+
+    
+    
     NSString *message = @"现在市场上交互设计做的比较成功的产品无一不是在功能性设计上给用户良好的体验。但是我们要知道在产品“同质化”的时代，同类产品的功能和价格趋于相同，产品的用户体验和美学价值在用户的选择中起了关键作用。我们如何在保证实现功能性需求的同时又可以让产品更好用好看呢？惊喜往往存在于被忽视的点上，这篇文章我就来给大家谈谈经常被我们忽视的模糊效果（Blur Effects）";
+    message = [message stringByAppendingString:message];
+    message = [message stringByAppendingString:message];
+    message = [message stringByAppendingString:message];
+    message = [message stringByAppendingString:message];
+    message = [message stringByAppendingString:message];
+    message = [message stringByAppendingString:message];
+    
+//    title = message;
+    
     NSString *cancelButtonTitle = @"取消";
     
 //    STAlertView *alertViewST = [[STAlertView alloc]initWithTitle:title

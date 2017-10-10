@@ -22,9 +22,9 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
 /** 2.视图容器 */
 @property(nonatomic, strong)UIView *contentView;
 /** 3.标题视图 */
-@property(nonatomic, strong)UILabel *labelTitle;
+@property(nonatomic, strong)UITextView *labelTitle;
 /** 4.内容视图 */
-@property(nonatomic, strong)UILabel *labelMessage;
+@property(nonatomic, strong)UITextView *labelMessage;
 /** 5.处理delegate传值 */
 @property(nonatomic, strong)NSMutableArray<UIButton *> *arrayButton;
 /** 6.虚化视图 */
@@ -70,7 +70,7 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
     return self;
 }
 
-+ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nonnull void (^)(STAlertView * _Nonnull, NSUInteger))block{
++ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView * _Nonnull, NSUInteger))block{
     STAlertView *alertView = [[STAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitle, nil];
     alertView.clickButtonBlock = block;
     [alertView show];
@@ -82,7 +82,7 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
     self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.backgroundColor = [UIColor clearColor];
-    self.visual = YES;
+    self.visual = NO;
     self.animationOption = STAlertAnimationOptionZoom;
     [self addSubview:self.effectView];
     [self addSubview:self.contentView];
@@ -325,21 +325,41 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
     CGFloat labelW = self.contentWidth - 2*labelX;
     
     [self.labelTitle sizeToFit];
-    CGSize size = self.labelTitle.frame.size;
-    self.labelTitle.frame = CGRectMake(labelX, labelY, labelW, size.height);
+    CGSize sizeTitle = self.labelTitle.frame.size;
+    if (sizeTitle.height > self.screenHeight/2) {
+        sizeTitle.height = self.screenHeight/2;
+    }
+    CGFloat labelH = sizeTitle.height;
+    if (!title) {
+        labelH = 0;
+    }
+    self.labelTitle.frame = CGRectMake(labelX, labelY, labelW, labelH);
 }
 
-- (void)setMessage:(NSString *)message
-{
+- (void)setMessage:(NSString *)message{
+
     _message = message;
     
     CGFloat labelX = 16;
+    CGFloat labelY = CGRectGetMaxY(self.labelTitle.frame) + 5;
     CGFloat labelW = self.contentWidth - 2*labelX;
     
     self.labelMessage.text = message;
     [self.labelMessage sizeToFit];
     CGSize sizeMessage = self.labelMessage.frame.size;
-    self.labelMessage.frame = CGRectMake(labelX, CGRectGetMaxY(self.labelTitle.frame) + 5, labelW, sizeMessage.height);
+    if (sizeMessage.height > self.screenHeight/2) {
+        sizeMessage.height = self.screenHeight/2;
+    }
+    CGFloat labelH = sizeMessage.height;
+    if (!message) {
+        labelH = 0;
+    }
+    self.labelMessage.frame = CGRectMake(labelX, labelY, labelW, labelH);
+}
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment{
+    _textAlignment = textAlignment;
+    self.labelMessage.textAlignment = textAlignment;
 }
 
 - (void)setVisual:(BOOL)visual
@@ -389,28 +409,30 @@ typedef void (^STAlertViewClickButtonBlock) (STAlertView *alertView,NSUInteger b
     return _contentView;
 }
 
-- (UILabel *)labelTitle
+- (UITextView *)labelTitle
 {
     if (!_labelTitle) {
-        _labelTitle = [[UILabel alloc]init];
+        _labelTitle = [[UITextView alloc]init];
         _labelTitle.frame = CGRectMake(16, 22, self.contentWidth-32, 0);
         _labelTitle.textColor = [UIColor blackColor];
         _labelTitle.textAlignment = NSTextAlignmentCenter;
-        _labelTitle.numberOfLines = 0;
         _labelTitle.font = [UIFont boldSystemFontOfSize:17];
+        [_labelTitle setEditable:NO];
+        [_labelTitle setSelectable:NO];
     }
     return _labelTitle;
 }
 
-- (UILabel *)labelMessage
+- (UITextView *)labelMessage
 {
     if (!_labelMessage) {
-        _labelMessage = [[UILabel alloc]init];
+        _labelMessage = [[UITextView alloc]init];
         _labelMessage.frame = CGRectMake(16, 22, self.contentWidth-32, 0);
         _labelMessage.textColor = [UIColor blackColor];
         _labelMessage.textAlignment = NSTextAlignmentCenter;
-        _labelMessage.numberOfLines = 0;
         _labelMessage.font = [UIFont systemFontOfSize:13];
+        [_labelMessage setEditable:NO];
+        [_labelMessage setSelectable:NO];
     }
     return _labelMessage;
 }

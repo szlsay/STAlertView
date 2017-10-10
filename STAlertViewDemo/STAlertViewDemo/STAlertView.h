@@ -23,12 +23,14 @@ typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
 @interface STAlertView : UIView
 - (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message delegate:(nullable id <STAlertViewDelegate>)delegate cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitles:(nullable NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
-+ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(void (^)(STAlertView *alertView, NSUInteger buttonIndex))block;
++ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(STAlertView *alertView, NSUInteger buttonIndex))block;
 
 // shows popup alert animated.
 - (void)show;
 @property(nullable,nonatomic,weak)id <STAlertViewDelegate> delegate;
 @property(nonatomic)STAlertAnimationOptions animationOption;
+// default is NSTextAlignmentCenter
+@property(nonatomic)NSTextAlignment textAlignment;
 // background visual
 @property(nonatomic, assign)BOOL visual;
 
@@ -43,3 +45,4 @@ typedef NS_OPTIONS(NSUInteger, STAlertAnimationOptions) {
 @end
 
 NS_ASSUME_NONNULL_END
+
