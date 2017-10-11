@@ -29,6 +29,9 @@ typedef NS_OPTIONS(NSUInteger, SXAlertAnimationOptions) {
 
 + (void)showWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex, NSString *text))block;
 
+- (instancetype)initWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex))block;
+
++ (void)showWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex))block;
 // shows popup alert animated.
 - (void)show;
 @property(nullable,nonatomic,weak)id <SXAlertViewDelegate> delegate;
@@ -39,6 +42,8 @@ typedef NS_OPTIONS(NSUInteger, SXAlertAnimationOptions) {
 @property(nonatomic, assign)BOOL visual;
 // Only Used to enter text information
 @property(nonatomic, strong)UITextField *textField;
+/** <##> */
+@property(nonatomic, assign)CGFloat widthImage;
 @end
 
 @protocol SXAlertViewDelegate <NSObject>

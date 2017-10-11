@@ -111,14 +111,55 @@
                                     <action selector="clickVisual:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bz9-fG-qnJ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuW-Ff-pkM">
+                                <rect key="frame" x="72" y="432" width="231" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.65948049344625759" blue="0.23374030844501192" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="VJW-9l-Zxz"/>
+                                    <constraint firstAttribute="width" constant="231" id="ryE-GY-CoL"/>
+                                </constraints>
+                                <state key="normal" title="W &lt; H"/>
+                                <connections>
+                                    <action selector="clickWLessH:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2q3-pK-dUC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KvL-hD-Zt6">
+                                <rect key="frame" x="72" y="470" width="231" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.65816112331298482" blue="0.23294341139662922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="t9y-co-U51"/>
+                                    <constraint firstAttribute="width" constant="231" id="wPe-nh-E8w"/>
+                                </constraints>
+                                <state key="normal" title="W = H"/>
+                                <connections>
+                                    <action selector="clickWEqualH:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aBM-Su-CE7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tgm-fd-u8x">
+                                <rect key="frame" x="72" y="508" width="231" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.65816112331298482" blue="0.23294341139662922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="231" id="qHs-v8-AOW"/>
+                                    <constraint firstAttribute="height" constant="30" id="tuG-O9-4IV"/>
+                                </constraints>
+                                <state key="normal" title="W &gt; H"/>
+                                <connections>
+                                    <action selector="clickWGreaterH:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vxn-f8-frm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Vvc-0q-Fks" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5t4-aD-rnj"/>
                             <constraint firstItem="Dhw-cH-9RN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7nr-FA-hmv"/>
+                            <constraint firstItem="tgm-fd-u8x" firstAttribute="top" secondItem="KvL-hD-Zt6" secondAttribute="bottom" constant="8" id="Csv-qA-0Yg"/>
+                            <constraint firstItem="nuW-Ff-pkM" firstAttribute="top" secondItem="sGR-Fj-bIt" secondAttribute="bottom" constant="18" id="EkU-tp-5dr"/>
+                            <constraint firstItem="nuW-Ff-pkM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FAK-1A-qye"/>
+                            <constraint firstItem="KvL-hD-Zt6" firstAttribute="top" secondItem="nuW-Ff-pkM" secondAttribute="bottom" constant="8" id="Fab-Wf-9Hu"/>
                             <constraint firstItem="Hy5-sj-mDV" firstAttribute="top" secondItem="TYp-UL-Xic" secondAttribute="bottom" constant="8" id="IRI-pV-M53"/>
                             <constraint firstItem="IB3-VO-VZo" firstAttribute="top" secondItem="Dhw-cH-9RN" secondAttribute="bottom" constant="36" id="JlT-07-D46"/>
                             <constraint firstItem="TYp-UL-Xic" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NVa-iD-yvB"/>
+                            <constraint firstItem="tgm-fd-u8x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OEt-va-ugu"/>
                             <constraint firstItem="Dhw-cH-9RN" firstAttribute="top" secondItem="UaT-MZ-Ddj" secondAttribute="bottom" constant="10" id="OZQ-dz-iyQ"/>
                             <constraint firstItem="Hy5-sj-mDV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QJd-J1-ZEw"/>
                             <constraint firstItem="Vvc-0q-Fks" firstAttribute="top" secondItem="IB3-VO-VZo" secondAttribute="bottom" constant="8" id="Xpm-Ui-cGT"/>
@@ -129,6 +170,7 @@
                             <constraint firstItem="UaT-MZ-Ddj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iGV-sN-POx"/>
                             <constraint firstItem="sGR-Fj-bIt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jl8-4h-T8l"/>
                             <constraint firstItem="19t-OL-6q1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="tUf-6Y-KlR"/>
+                            <constraint firstItem="KvL-hD-Zt6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xtj-oU-yXo"/>
                             <constraint firstItem="19t-OL-6q1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yTf-8p-K7f"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

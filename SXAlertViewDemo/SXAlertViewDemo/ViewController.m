@@ -58,6 +58,25 @@
     [alertView show];
 }
 
+- (IBAction)clickWLessH:(UIButton *)sender {
+    [SXAlertView showWithTitle:@"发送图片给：哈哈哈" image:[UIImage imageNamed:@"pic1"] cancelButtonTitle:@"取消" otherButtonTitle:@"确定" clickButtonBlock:^(SXAlertView * _Nonnull alertView, NSUInteger buttonIndex) {
+         NSLog(@"%s %zd", __FUNCTION__, buttonIndex);
+    }];
+    
+}
+- (IBAction)clickWEqualH:(UIButton *)sender {
+    [SXAlertView showWithTitle:@"发送图片给：哈哈哈" image:[UIImage imageNamed:@"pic3"] cancelButtonTitle:@"取消" otherButtonTitle:@"确定" clickButtonBlock:^(SXAlertView * _Nonnull alertView, NSUInteger buttonIndex) {
+         NSLog(@"%s %zd", __FUNCTION__, buttonIndex);
+    }];
+    
+}
+- (IBAction)clickWGreaterH:(UIButton *)sender {
+    [SXAlertView showWithTitle:@"发送图片给：哈哈哈" image:[UIImage imageNamed:@"pic2"] cancelButtonTitle:@"取消" otherButtonTitle:@"确定" clickButtonBlock:^(SXAlertView * _Nonnull alertView, NSUInteger buttonIndex) {
+        NSLog(@"%s %zd", __FUNCTION__, buttonIndex);
+    }];
+    
+}
+
 
 - (void)alertView:(SXAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSLog(@"%s %zd", __FUNCTION__, buttonIndex);

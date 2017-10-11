@@ -24,6 +24,8 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 @property(nonatomic, strong)UITextView *labelTitle;
 /** 4.内容视图 */
 @property(nonatomic, strong)UITextView *labelMessage;
+/**  */
+@property(nonatomic, strong)UIImageView *imageIcon;
 /** 5.处理delegate传值 */
 @property(nonatomic, strong)NSMutableArray<UIButton *> *arrayButton;
 /** 6.虚化视图 */
@@ -32,6 +34,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 /** 7.显示的数据 */
 @property(nonatomic, strong, nullable)NSString *title;
 @property(nonatomic, strong, nullable)NSString *message;
+@property(nonatomic, strong, nullable)UIImage *image;
 @property(nonatomic, strong, nullable)NSString *placeholder;
 @property(nonatomic, strong, nullable)NSString *cancelButtonTitle;
 @property(nonatomic, strong, nullable)NSMutableArray<NSString *> *otherButtonTitles;
@@ -46,9 +49,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 
 - (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message delegate:(nullable id <SXAlertViewDelegate>)delegate cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitles:(nullable NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
 {
-    self = [super init];
-    if (self) {
-        
+    if (self = [super init]) {
         self.title = title;
         self.message = message;
         self.delegate = delegate;
@@ -101,19 +102,47 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
         self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
         self.contentView.center = self.center;
         self.clickTextFieldBlock = block;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShow:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
-        
+        [self addObserverKeyboardNotification];
     }
     return self;
+}
+
+- (instancetype)initWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex))block{
+    if (self = [super init]) {
+        self.widthImage = 88;
+        self.title = title;
+        _cancelButtonTitle = cancelButtonTitle;
+        
+        [self.otherButtonTitles addObject:otherButtonTitle];
+        self.image = image;
+        self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.backgroundColor = [UIColor clearColor];
+        self.visual = NO;
+        self.animationOption = SXAlertAnimationOptionZoom;
+        [self addSubview:self.effectView];
+        [self addSubview:self.contentView];
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        [self.contentView addSubview:self.labelTitle];
+        [self.contentView addSubview:self.self.imageIcon];
+        
+        CGFloat buttonY = CGRectGetMaxY(self.imageIcon.frame) + 20;
+        UIButton *buttonCancel = [self buttonWithFrame:CGRectMake(0,buttonY, self.contentWidth/2, self.contentHeight/2) title:cancelButtonTitle target:self action:@selector(clickCancel:)];
+        UIButton *buttonOther = [self buttonWithFrame:CGRectMake(self.contentWidth/2, buttonY, self.contentWidth/2, self.contentHeight/2) title:otherButtonTitle target:self action:@selector(clickOther:)];
+        [self.contentView addSubview:buttonOther];
+        [self.contentView addSubview:buttonCancel];
+        
+        CGFloat height = self.contentHeight/2 + buttonY;
+        self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
+        self.contentView.center = self.center;
+        self.clickButtonBlock = block;
+    }
+    return self;
+}
+
++ (void)showWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex))block{
+    SXAlertView *alertView = [[SXAlertView alloc]initWithTitle:title image:image  cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle clickButtonBlock:block];
+    [alertView show];
 }
 
 + (void)showWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex, NSString *text))block{
@@ -122,12 +151,10 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 }
 
 - (void)dealloc{
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self removeObserverKeyboardNotification];
 }
 
-- (void)setupDefault
-{
+- (void)setupDefault{
     self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.backgroundColor = [UIColor clearColor];
@@ -140,9 +167,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     [self.contentView addSubview:self.labelMessage];
 }
 
-- (void)setupButton
-{
-    
+- (void)setupButton{
     CGFloat buttonY = CGRectGetMaxY(self.labelMessage.frame) + 20;
     
     NSInteger countRow = 0;
@@ -212,7 +237,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 #pragma mark - --- 2.delegate 视图委托 ---
 
 #pragma mark - --- 3.event response 事件相应 ---
-
+#pragma mark - --- 3.1.1 点击 - 取消按钮事件 ---
 - (void)clickCancel:(UIButton *)button{
     if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
         [self.delegate alertView:self clickedButtonAtIndex:0];
@@ -225,10 +250,10 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     if (self.clickTextFieldBlock) {
         self.clickTextFieldBlock(self, 0, self.textField.text);
     }
-    
     [self remove];
 }
 
+#pragma mark - --- 3.1.2 点击 - 其他按钮事件 ---
 - (void)clickOther:(UIButton *)button{
     NSInteger buttonIndex = 0;
     if (self.cancelButtonTitle) {
@@ -252,14 +277,19 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     [self remove];
 }
 
+#pragma mark - --- 3.2 UITextField - 编辑事件 ---
 - (void)clickTextChanged:(UITextField *)textField{
     if (self.clickTextFieldBlock) {
         self.clickTextFieldBlock(self, -1, textField.text);
     }
 }
+
+#pragma mark - --- 3.3 视图展示与隐藏 ---
 - (void)show {
-    [[[UIInputViewController alloc]init]dismissKeyboard];
-    [[UIApplication sharedApplication].keyWindow addSubview:self];
+    // 用于隐藏已显示的键盘
+    [[[UIInputViewController alloc] init] dismissKeyboard];
+    
+    [[UIApplication sharedApplication].delegate.window addSubview:self];
 
     switch (self.animationOption) {
         case SXAlertAnimationOptionNone:{
@@ -270,8 +300,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
                 }
                 self.contentView.alpha = 1.0;
             }];
-        }
-            break;
+        }break;
         case SXAlertAnimationOptionZoom:{
             [self.contentView.layer setValue:@(0) forKeyPath:@"transform.scale"];
             [UIView animateWithDuration:0.75 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:1.0
@@ -282,8 +311,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
                                  }
                                  [self.contentView.layer setValue:@(1.0) forKeyPath:@"transform.scale"];
                              } completion:nil];
-        }
-            break;
+        }break;
         case SXAlertAnimationOptionTopToCenter:{
             CGPoint startPoint = CGPointMake(self.center.x, - CGRectGetHeight(self.contentView.frame));
             self.contentView.layer.position = startPoint;
@@ -295,16 +323,13 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
                                  }
                                  self.contentView.layer.position = self.center;
                              } completion:nil];
-        }
-            break;
+        }break;
         default:
             break;
     }
-    
 }
 
 - (void)remove{
-    
     switch (self.animationOption) {
         case SXAlertAnimationOptionNone:{
             [UIView animateWithDuration:0.3 animations:^{
@@ -315,8 +340,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
             }];
-        }
-            break;
+        }break;
         case SXAlertAnimationOptionZoom:{
             [UIView animateWithDuration:0.3 animations:^{
                 self.contentView.alpha = 0.0;
@@ -326,8 +350,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
             }];
-        }
-            break;
+        }break;
         case SXAlertAnimationOptionTopToCenter:{
             CGPoint endPoint = CGPointMake(self.center.x, CGRectGetHeight(self.frame) + CGRectGetHeight(self.contentView.frame));
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -338,11 +361,21 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
             } completion:^(BOOL finished) {
                 [self removeFromSuperview];
             }];
-        }
-            break;
+        }break;
         default:
             break;
     }
+}
+
+#pragma mark - --- 3.4 键盘通知事件 ---
+- (void)addObserverKeyboardNotification{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)removeObserverKeyboardNotification{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)keyboardWillShow:(NSNotification *)noti{
@@ -395,8 +428,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 
 #pragma mark - --- 5.setters 属性 ---
 
-- (void)setTitle:(NSString *)title
-{
+- (void)setTitle:(NSString *)title{
     _title = title;
     self.labelTitle.text = title;
     
@@ -453,6 +485,40 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     CGFloat labelH = sizeMessage.height;
     self.textField.frame = CGRectMake(labelX, labelY, labelW, labelH);
 }
+
+- (void)setImage:(UIImage *)image{
+    _image = image;
+    CGFloat labelY = CGRectGetMaxY(self.labelTitle.frame) + 5;
+    self.imageIcon.image = image;
+    [self.imageIcon sizeToFit];
+    CGFloat imageW = self.imageIcon.frame.size.width;
+    CGFloat imageH = self.imageIcon.frame.size.height;
+    
+    if (imageW > imageH) {
+        CGFloat h = imageH;
+        imageH = self.widthImage;
+        imageW = imageW / h * self.widthImage;
+        
+        if (imageW > self.contentWidth - 20) {
+            imageW = self.contentWidth - 20;
+        }
+    }else if (imageW == imageH){
+        imageW = self.widthImage;
+        imageH = self.widthImage;
+    }else {
+        CGFloat w = imageW;
+        imageW = self.widthImage;
+        imageH = imageH / w * self.widthImage;
+        
+        if (imageH > self.contentWidth - 20) {
+            imageH = self.contentWidth - 20;
+        }
+    }
+    
+    CGFloat labelX = (self.contentWidth - imageW)/2;
+    self.imageIcon.frame = CGRectMake(labelX, labelY, imageW, imageH);
+}
+
 - (void)setTextAlignment:(NSTextAlignment)textAlignment{
     _textAlignment = textAlignment;
     self.labelMessage.textAlignment = textAlignment;
@@ -546,6 +612,13 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     return _textField;
 }
 
+- (UIImageView *)imageIcon{
+    if (!_imageIcon) {
+        _imageIcon = [[UIImageView alloc]init];
+    }
+    return _imageIcon;
+    
+}
 - (UIVisualEffectView *)effectView
 {
     if (!_effectView) {
