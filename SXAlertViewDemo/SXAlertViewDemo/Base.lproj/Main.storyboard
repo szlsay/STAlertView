@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,6 +14,10 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bzo-m9-VGV"/>
+                        <viewControllerLayoutGuide type="bottom" id="MhV-op-PIU"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -169,11 +174,10 @@
                             <constraint firstItem="TYp-UL-Xic" firstAttribute="top" secondItem="Vvc-0q-Fks" secondAttribute="bottom" constant="20" id="eRE-0j-rz5"/>
                             <constraint firstItem="UaT-MZ-Ddj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iGV-sN-POx"/>
                             <constraint firstItem="sGR-Fj-bIt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jl8-4h-T8l"/>
-                            <constraint firstItem="19t-OL-6q1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="tUf-6Y-KlR"/>
+                            <constraint firstItem="19t-OL-6q1" firstAttribute="top" secondItem="bzo-m9-VGV" secondAttribute="bottom" constant="30" id="tUf-6Y-KlR"/>
                             <constraint firstItem="KvL-hD-Zt6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xtj-oU-yXo"/>
                             <constraint firstItem="19t-OL-6q1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yTf-8p-K7f"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="textResult" destination="Hy5-sj-mDV" id="COQ-p8-dBQ"/>

@@ -10,6 +10,9 @@
 
 typedef void (^SXAlertViewClickButtonBlock) (SXAlertView *alertView, NSUInteger buttonIndex);
 typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteger buttonIndex, NSString *text);
+
+CGFloat const marginX = 16;
+CGFloat const marginY = 20;
 @interface SXAlertView()
 
 /** 1.视图的宽高 */
@@ -432,8 +435,8 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     _title = title;
     self.labelTitle.text = title;
     
-    CGFloat labelX = 16;
-    CGFloat labelY = 20;
+    CGFloat labelX = marginX;
+    CGFloat labelY = marginY;
     CGFloat labelW = self.contentWidth - 2*labelX;
     
     [self.labelTitle sizeToFit];
@@ -452,7 +455,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     
     _message = message;
     
-    CGFloat labelX = 16;
+    CGFloat labelX = marginX;
     CGFloat labelY = CGRectGetMaxY(self.labelTitle.frame) + 5;
     CGFloat labelW = self.contentWidth - 2*labelX;
     
@@ -472,9 +475,9 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 - (void)setPlaceholder:(NSString *)placeholder{
     _placeholder = placeholder;
     
-    CGFloat labelX = 16;
-    CGFloat labelY = CGRectGetMaxY(self.labelTitle.frame) + 5;
-    CGFloat labelW = self.contentWidth - 2*labelX;
+    CGFloat tfX = marginX;
+    CGFloat tfY = CGRectGetMaxY(self.labelTitle.frame) + 5;
+    CGFloat tfW = self.contentWidth - 2*tfX;
     
     self.textField.placeholder = placeholder;
     [self.textField sizeToFit];
@@ -482,8 +485,8 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     if (sizeMessage.height > self.screenHeight/2) {
         sizeMessage.height = self.screenHeight/2;
     }
-    CGFloat labelH = sizeMessage.height;
-    self.textField.frame = CGRectMake(labelX, labelY, labelW, labelH);
+    CGFloat tfH = sizeMessage.height;
+    self.textField.frame = CGRectMake(tfX, tfY, tfW, tfH);
 }
 
 - (void)setImage:(UIImage *)image{
@@ -499,8 +502,8 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
         imageH = self.widthImage;
         imageW = imageW / h * self.widthImage;
         
-        if (imageW > self.contentWidth - 20) {
-            imageW = self.contentWidth - 20;
+        if (imageW > self.contentWidth - 2*marginX) {
+            imageW = self.contentWidth - 2*marginX;
         }
     }else if (imageW == imageH){
         imageW = self.widthImage;
@@ -510,8 +513,8 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
         imageW = self.widthImage;
         imageH = imageH / w * self.widthImage;
         
-        if (imageH > self.contentWidth - 20) {
-            imageH = self.contentWidth - 20;
+        if (imageH > self.contentWidth - 2*marginX) {
+            imageH = self.contentWidth - 2*marginX;
         }
     }
     
@@ -524,8 +527,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
     self.labelMessage.textAlignment = textAlignment;
 }
 
-- (void)setVisual:(BOOL)visual
-{
+- (void)setVisual:(BOOL)visual{
     _visual = visual;
     if (visual) {
         self.effectView.backgroundColor = [UIColor clearColor];
@@ -575,7 +577,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 {
     if (!_labelTitle) {
         _labelTitle = [[UITextView alloc]init];
-        _labelTitle.frame = CGRectMake(16, 22, self.contentWidth-32, 0);
+        _labelTitle.frame = CGRectMake(marginX, marginY, self.contentWidth-2*marginX, 0);
         _labelTitle.textColor = [UIColor blackColor];
         _labelTitle.textAlignment = NSTextAlignmentCenter;
         _labelTitle.font = [UIFont boldSystemFontOfSize:17];
@@ -589,7 +591,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 {
     if (!_labelMessage) {
         _labelMessage = [[UITextView alloc]init];
-        _labelMessage.frame = CGRectMake(16, 22, self.contentWidth-32, 0);
+        _labelMessage.frame = CGRectMake(marginX, marginY, self.contentWidth-2*marginX, 0);
         _labelMessage.textColor = [UIColor blackColor];
         _labelMessage.textAlignment = NSTextAlignmentCenter;
         _labelMessage.font = [UIFont systemFontOfSize:13];
@@ -603,7 +605,7 @@ typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteg
 {
     if (!_textField) {
         _textField = [[UITextField alloc]init];
-        _textField.frame = CGRectMake(16, 22, self.contentWidth-32, 0);
+        _textField.frame = CGRectMake(marginX, marginY, self.contentWidth-2*marginX, 0);
         _textField.textColor = [UIColor blackColor];
         _textField.font = [UIFont systemFontOfSize:15];
         _textField.borderStyle = UITextBorderStyleRoundedRect;
