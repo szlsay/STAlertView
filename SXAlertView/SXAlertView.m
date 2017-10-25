@@ -8,12 +8,12 @@
 
 #import "SXAlertView.h"
 
-typedef void (^SXAlertViewClickButtonBlock) (SXAlertView *alertView, NSUInteger buttonIndex);
-typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSUInteger buttonIndex, NSString *text);
+typedef void (^SXAlertViewClickButtonBlock) (SXAlertView *alertView, NSInteger buttonIndex);
+typedef void (^SXAlertViewClickTextFieldBlock) (SXAlertView *alertView, NSInteger buttonIndex, NSString *text);
 
 CGFloat const marginX = 16;
 CGFloat const marginY = 20;
-@interface SXAlertView()
+@interface SXAlertView()<UITextViewDelegate>
 
 /** 1.视图的宽高 */
 @property(nonatomic, assign, readonly)CGFloat screenWidth;
@@ -27,12 +27,15 @@ CGFloat const marginY = 20;
 @property(nonatomic, strong)UITextView *labelTitle;
 /** 4.内容视图 */
 @property(nonatomic, strong)UITextView *labelMessage;
-/**  */
+/** 5.图片视图 */
 @property(nonatomic, strong)UIImageView *imageIcon;
 /** 5.处理delegate传值 */
 @property(nonatomic, strong)NSMutableArray<UIButton *> *arrayButton;
 /** 6.虚化视图 */
 @property(nonatomic, strong)UIVisualEffectView *effectView;
+
+@property(nonatomic, strong)UITextView *textView;
+@property(nonatomic, strong)UITextField *textFieldContent;
 
 /** 7.显示的数据 */
 @property(nonatomic, strong, nullable)NSString *title;
@@ -50,9 +53,10 @@ CGFloat const marginY = 20;
 
 #pragma mark - --- 1.lift cycle 生命周期 ---
 
-- (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message delegate:(nullable id <SXAlertViewDelegate>)delegate cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitles:(nullable NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
-{
+- (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message delegate:(nullable id <SXAlertViewDelegate>)delegate cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitles:(nullable NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION{
     if (self = [super init]) {
+        
+        // 1.设置数据
         self.title = title;
         self.message = message;
         self.delegate = delegate;
@@ -68,88 +72,100 @@ CGFloat const marginY = 20;
                 [self.otherButtonTitles addObject:eachObject];
             va_end(argumentList);
         }
+        
+        // 2.初始化UI
         [self setupDefault];
+        
+        // 3.添加子视图
+        [self.contentView addSubview:self.labelTitle];
+        [self.contentView addSubview:self.labelMessage];
+        
+        // 4.初始化Button
         [self setupButton];
     }
     return self;
 }
 
-+ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView * _Nonnull, NSUInteger))block{
++ (void)showWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView * _Nonnull, NSInteger))block{
     SXAlertView *alertView = [[SXAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitle, nil];
     alertView.clickButtonBlock = block;
     [alertView show];
 }
 
-- (instancetype)initWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex, NSString *text))block{
+- (instancetype)initWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSInteger buttonIndex, NSString *text))block{
     if (self = [super init]) {
+        // 1.设置数据
         self.title = title;
         self.placeholder = placeholder;
-        self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.backgroundColor = [UIColor clearColor];
-        self.visual = NO;
-        self.animationOption = SXAlertAnimationOptionZoom;
-        [self addSubview:self.effectView];
-        [self addSubview:self.contentView];
-        self.contentView.backgroundColor = [UIColor whiteColor];
+        self.clickTextFieldBlock = block;
+        // 2.初始化UI
+        [self setupDefault];
+        // 3.添加子视图
         [self.contentView addSubview:self.labelTitle];
         [self.contentView addSubview:self.textField];
-        
+        // 4.初始化Button
         CGFloat buttonY = CGRectGetMaxY(self.textField.frame) + 20;
-        UIButton *buttonCancel = [self buttonWithFrame:CGRectMake(0,buttonY, self.contentWidth/2, self.contentHeight/2) title:cancelButtonTitle target:self action:@selector(clickCancel:)];
-        UIButton *buttonOther = [self buttonWithFrame:CGRectMake(self.contentWidth/2, buttonY, self.contentWidth/2, self.contentHeight/2) title:otherButtonTitle target:self action:@selector(clickOther:)];
-        [self.contentView addSubview:buttonOther];
-        [self.contentView addSubview:buttonCancel];
-        
-        CGFloat height = self.contentHeight/2 + buttonY;
-        self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
-        self.contentView.center = self.center;
-        self.clickTextFieldBlock = block;
+        [self setupButtonWithbuttonY:buttonY cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle];
+        // 5.添加通知
         [self addObserverKeyboardNotification];
     }
     return self;
 }
 
-- (instancetype)initWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex))block{
++ (void)showWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSInteger buttonIndex, NSString *text))block{
+    SXAlertView *alertView = [[SXAlertView alloc]initWithTitle:title placeholder:placeholder  cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle clickButtonBlock:block];
+    [alertView show];
+}
+
+- (instancetype)initWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSInteger buttonIndex))block{
     if (self = [super init]) {
+        // 1.设置数据
         self.widthImage = 88;
         self.title = title;
         _cancelButtonTitle = cancelButtonTitle;
-        
         [self.otherButtonTitles addObject:otherButtonTitle];
         self.image = image;
-        self.frame = CGRectMake(0, 0, self.screenWidth, self.screenHeight);
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.backgroundColor = [UIColor clearColor];
-        self.visual = NO;
-        self.animationOption = SXAlertAnimationOptionZoom;
-        [self addSubview:self.effectView];
-        [self addSubview:self.contentView];
-        self.contentView.backgroundColor = [UIColor whiteColor];
+        self.clickButtonBlock = block;
+        // 2.初始化UI
+        [self setupDefault];
+        // 3.添加子视图
         [self.contentView addSubview:self.labelTitle];
         [self.contentView addSubview:self.self.imageIcon];
-        
+        // 4.初始化Button
         CGFloat buttonY = CGRectGetMaxY(self.imageIcon.frame) + 20;
-        UIButton *buttonCancel = [self buttonWithFrame:CGRectMake(0,buttonY, self.contentWidth/2, self.contentHeight/2) title:cancelButtonTitle target:self action:@selector(clickCancel:)];
-        UIButton *buttonOther = [self buttonWithFrame:CGRectMake(self.contentWidth/2, buttonY, self.contentWidth/2, self.contentHeight/2) title:otherButtonTitle target:self action:@selector(clickOther:)];
-        [self.contentView addSubview:buttonOther];
-        [self.contentView addSubview:buttonCancel];
+        [self setupButtonWithbuttonY:buttonY cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle];
         
-        CGFloat height = self.contentHeight/2 + buttonY;
-        self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
-        self.contentView.center = self.center;
-        self.clickButtonBlock = block;
     }
     return self;
 }
 
-+ (void)showWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex))block{
++ (void)showWithTitle:(nullable NSString *)title image:(nullable UIImage *)image cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSInteger buttonIndex))block{
     SXAlertView *alertView = [[SXAlertView alloc]initWithTitle:title image:image  cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle clickButtonBlock:block];
     [alertView show];
 }
 
-+ (void)showWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSUInteger buttonIndex, NSString *text))block{
-    SXAlertView *alertView = [[SXAlertView alloc]initWithTitle:title placeholder:placeholder  cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle clickButtonBlock:block];
+- (instancetype)initTextViewWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSInteger buttonIndex, NSString *text))block{
+    if (self = [super init]) {
+        // 1.设置数据
+        self.title = title;
+        self.textFieldContent.placeholder = placeholder;
+        self.clickTextFieldBlock = block;
+        // 2.初始化UI
+        [self setupDefault];
+        // 3.添加子视图
+        [self.contentView addSubview:self.labelTitle];
+        [self.contentView addSubview:self.textView];
+        // 4.初始化Button
+        CGFloat buttonY = CGRectGetMaxY(self.textView.frame) + 20;
+        [self setupButtonWithbuttonY:buttonY cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle];
+        // 5.添加通知
+        [self addObserverKeyboardNotification];
+    }
+    return self;
+}
+
++ (void)showTextViewWithTitle:(nullable NSString *)title placeholder:(nullable NSString *)placeholder cancelButtonTitle:(nullable NSString *)cancelButtonTitle otherButtonTitle:(nullable NSString *)otherButtonTitle clickButtonBlock:(nullable void (^)(SXAlertView *alertView, NSInteger buttonIndex, NSString *text))block{
+    SXAlertView *alertView = [[SXAlertView alloc]initTextViewWithTitle:title placeholder:placeholder  cancelButtonTitle:cancelButtonTitle otherButtonTitle:otherButtonTitle clickButtonBlock:block];
     [alertView show];
 }
 
@@ -166,8 +182,6 @@ CGFloat const marginY = 20;
     [self addSubview:self.effectView];
     [self addSubview:self.contentView];
     self.contentView.backgroundColor = [UIColor whiteColor];
-    [self.contentView addSubview:self.labelTitle];
-    [self.contentView addSubview:self.labelMessage];
 }
 
 - (void)setupButton{
@@ -237,8 +251,30 @@ CGFloat const marginY = 20;
     }
 }
 
-#pragma mark - --- 2.delegate 视图委托 ---
+- (void)setupButtonWithbuttonY:(CGFloat)buttonY cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitle:(NSString *)otherButtonTitle{
+    UIButton *buttonCancel = [self buttonWithFrame:CGRectMake(0,buttonY, self.contentWidth/2, self.contentHeight/2) title:cancelButtonTitle target:self action:@selector(clickCancel:)];
+    UIButton *buttonOther = [self buttonWithFrame:CGRectMake(self.contentWidth/2, buttonY, self.contentWidth/2, self.contentHeight/2) title:otherButtonTitle target:self action:@selector(clickOther:)];
+    [self.contentView addSubview:buttonOther];
+    [self.contentView addSubview:buttonCancel];
+    
+    CGFloat height = self.contentHeight/2 + buttonY;
+    self.contentView.frame = CGRectMake(0, 0, self.contentWidth, height);
+    self.contentView.center = self.center;
+}
 
+#pragma mark - --- 2.delegate 视图委托 ---
+- (void)textViewDidChange:(UITextView *)textView{
+    NSLog(@"%s %@", __FUNCTION__, textView);
+    if (textView.text.length > 0) {
+        self.textFieldContent.hidden = YES;
+    }else {
+        self.textFieldContent.hidden = NO;
+    }
+    
+    if (self.clickTextFieldBlock) {
+        self.clickTextFieldBlock(self, -1, textView.text);
+    }
+}
 #pragma mark - --- 3.event response 事件相应 ---
 #pragma mark - --- 3.1.1 点击 - 取消按钮事件 ---
 - (void)clickCancel:(UIButton *)button{
@@ -250,8 +286,18 @@ CGFloat const marginY = 20;
         self.clickButtonBlock(self, 0);
     }
     
-    if (self.clickTextFieldBlock) {
-        self.clickTextFieldBlock(self, 0, self.textField.text);
+    if (self.textField.text.length > 0) {
+        if (self.clickTextFieldBlock) {
+            self.clickTextFieldBlock(self, 0, self.textField.text);
+        }
+    }else if (self.textView.text.length > 0){
+        if (self.clickTextFieldBlock) {
+            self.clickTextFieldBlock(self,0, self.textView.text);
+        }
+    }else {
+        if (self.clickTextFieldBlock) {
+            self.clickTextFieldBlock(self,0, @"");
+        }
     }
     [self remove];
 }
@@ -273,8 +319,18 @@ CGFloat const marginY = 20;
         self.clickButtonBlock(self, buttonIndex);
     }
     
-    if (self.clickTextFieldBlock) {
-        self.clickTextFieldBlock(self, 1, self.textField.text);
+    if (self.textField.text.length > 0) {
+        if (self.clickTextFieldBlock) {
+            self.clickTextFieldBlock(self, 1, self.textField.text);
+        }
+    }else if (self.textView.text.length > 0){
+        if (self.clickTextFieldBlock) {
+            self.clickTextFieldBlock(self, 1, self.textView.text);
+        }
+    }else {
+        if (self.clickTextFieldBlock) {
+            self.clickTextFieldBlock(self, 1, @"");
+        }
     }
     
     [self remove];
@@ -449,6 +505,7 @@ CGFloat const marginY = 20;
         labelH = 0;
     }
     self.labelTitle.frame = CGRectMake(labelX, labelY, labelW, labelH);
+    self.textView.frame = CGRectMake(labelX, labelY+labelH+5, labelW, 75);
 }
 
 - (void)setMessage:(NSString *)message{
@@ -621,6 +678,7 @@ CGFloat const marginY = 20;
     return _imageIcon;
     
 }
+
 - (UIVisualEffectView *)effectView
 {
     if (!_effectView) {
@@ -631,6 +689,36 @@ CGFloat const marginY = 20;
     }
     return _effectView;
 }
+
+- (UITextView *)textView
+{
+    if (!_textView) {
+        _textView = [[UITextView alloc]init];
+        _textView.frame = CGRectMake(marginX, marginY, self.contentWidth-2*marginX, 75);
+        _textView.textColor = [UIColor blackColor];
+        _textView.font = [UIFont systemFontOfSize:15];
+        [_textView.layer setBorderColor:[UIColor colorWithRed:220.0/255 green:220.0/255 blue:220.0/255 alpha:1].CGColor];
+        [_textView.layer setBorderWidth:0.5];
+        [_textView.layer setMasksToBounds:YES];
+        [_textView.layer setCornerRadius:4];
+        [_textView addSubview:self.textFieldContent];
+        [_textView setDelegate:self];
+    }
+    return _textView;
+}
+
+- (UITextField *)textFieldContent
+{
+    if (!_textFieldContent) {
+        _textFieldContent = [[UITextField alloc]init];
+        _textFieldContent.frame = CGRectMake(4, -6, self.contentWidth-2*marginX, 44);
+        _textFieldContent.font = [UIFont systemFontOfSize:15];
+        _textFieldContent.borderStyle = UITextBorderStyleNone;
+        [_textFieldContent setEnabled:NO];
+    }
+    return _textFieldContent;
+}
+
 - (NSMutableArray<UIButton *> *)arrayButton
 {
     if (!_arrayButton) {

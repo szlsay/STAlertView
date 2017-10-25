@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name     = 'SXAlertView'
-s.version  = '2.1'
+s.version  = '2.2'
 s.license  = { :type => 'MIT', :file => 'LICENSE'}
 s.summary  = '600行代码实现的简易UIAlertView，添加动画，虚化效果。接口文件中没有对视图的更多的视图属性开放接口，使用过程中可以根据自己的需求进行自定义接口'
 s.homepage = 'https://github.com/STShenZhaoliang'

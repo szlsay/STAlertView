@@ -9,20 +9,22 @@
 
 ## 一、使用
 
-1. 使用POD方式 `pod 'SXAlertView', '2.1'`
-2. 使用carthage方式 `github "STShenzhaoliang/STAlertView" "2.1"` 
+1. 使用POD方式 `pod 'SXAlertView', '2.2'`
+2. 使用carthage方式 `github "STShenzhaoliang/STAlertView" "2.2"` 
 
 ## 二、显示效果
 ### 2.1 多种动画效果
 ![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif1.gif)
 ### 2.2 多个按钮或多文本效果
 ![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif2.gif)
-### 2.3 文本输入效果
+### 2.3 文本输入显示效果
 ![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif3.gif)
 ### 2.4 虚化效果
 ![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif4.gif)
 ### 2.5 图片显示效果
 ![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif5.gif)
+### 2.6 多行输入显示效果
+![image](https://github.com/STShenZhaoliang/STImage/blob/master/SXAlertView/gif6.gif)
 
 ## 三、TODO
 3.1 需要完成多个按钮或多文本效果下的自动布局
